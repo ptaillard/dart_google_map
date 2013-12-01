@@ -59,10 +59,15 @@ void main() {
  
   createMarkerCity();
  
+  querySelector("#startcity").appendHtml('<option value="0" data-latstart="37.781298" data-lngstart="-122.418648" data-latend="37.000668" data-lngend="-110.173627">Tout</option>');
   querySelector("#startcity").appendHtml('<option value="0" data-latstart="37.781298" data-lngstart="-122.418648" data-latend="34.911273" data-lngend="-117.015488">San Francisco</option>');
-  querySelector("#startcity").appendHtml('<option value="1" data-latstart="34.911273" data-lngstart="-117.015488" data-latend="34.911273" data-lngend="-117.015488">Barstow</option>');
+  querySelector("#startcity").appendHtml('<option value="1" data-latstart="34.911273" data-lngstart="-117.015488" data-latend="35.202428" data-lngend="-114.055359">Barstow</option>');
+  querySelector("#startcity").appendHtml('<option value="2" data-latstart="35.202428" data-lngstart="-114.055359" data-latend="36.061034" data-lngend="-112.142311">Kingman</option>');
+  querySelector("#startcity").appendHtml('<option value="3" data-latstart="36.061034" data-lngstart="-112.142311" data-latend="37.000668" data-lngend="-110.173627">Grand Canyon</option>');
   
   querySelector('#startcity').onChange.listen((e) => computeRoute());
+  
+  computeRoute();
 }
 
 void createMarkerCity() {
@@ -77,6 +82,11 @@ void createMarkerCity() {
   
   LatLng coordinateGrandCanyon = new LatLng(36.061034,-112.142311); 
   addMarkerOnCity(map, coordinateGrandCanyon, 'Grand Canyon', '22 Juin');
+  
+  LatLng coordinateMonumentValley = new LatLng(37.000668,-110.173627); 
+  addMarkerOnCity(map, coordinateMonumentValley, 'Monument Valley', '26 Juin');
+  
+  
 }
 
 void initGoogleMap() {
@@ -92,13 +102,17 @@ void initGoogleMap() {
 }
 
 void computeRoute() {
-  final element = (querySelector('#startcity')  as SelectElement).attributes['data-latstart'];
-  //element.attributes['data-lat-start'];
-  querySelector("#infos")..text = element.toString();
+  final element1 = querySelector('#startcity') as SelectElement;
+  final el = element1.selectedOptions[0];
+  
+  final lats = double.parse(el.attributes['data-latstart']);
+  final lngs = double.parse(el.attributes['data-lngstart']);
+  final late = double.parse(el.attributes['data-latend']);
+  final lnge = double.parse(el.attributes['data-lngend']);
   
  DirectionsRequest directionsRequest = new DirectionsRequest()
-    ..origin = new LatLng(37.781298,-122.418648)
-    ..destination = new LatLng(36.061034,-112.142311)
+    ..origin = new LatLng(lats, lngs)
+    ..destination = new LatLng(late, lnge)
     ..travelMode = TravelMode.DRIVING;
   
   directionsService.route(directionsRequest, displayRoute);
@@ -131,5 +145,5 @@ void displayRoute(DirectionsResult results, DirectionsStatus status) {
   if(status == DirectionsStatus.OK) {
     directionsDisplay.directions = results;
   }
- // querySelector("#infos")..text = status.value;
+  querySelector("#infos")..text = status.value;
 }
