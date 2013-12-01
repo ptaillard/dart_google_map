@@ -8,29 +8,43 @@ library google_maps;
 // https://developers.google.com/maps/documentation/javascript/tutorial#HelloWorld
 // You can view the original JavaScript example at
 // https://developers.google.com/maps/documentation/javascript/examples/map-simple
-
-import 'dart:html' show querySelector;
-import 'dart:js' show context, JsObject;
+import 'dart:html';
+import 'package:google_maps/google_maps.dart';
 
 void main() {
-  // The top-level getter context provides a JsObject that represents the global
-  // object in JavaScript.
-  final google_maps = context['google']['maps'];
+  final mapOptions = new MapOptions()
+    ..zoom = 8
+    ..center = new LatLng(37.781298,-122.418648)
+    ..mapTypeId = MapTypeId.ROADMAP
+    ;
+  final map = new GMap(querySelector("#map-canvas"), mapOptions);
+  
+  LatLng coordinate = new LatLng(37.781298,-122.418648); 
+  addMarkerOnCity(map, coordinate, 'San Francisco', '16 Juin');
 
-  // new JsObject() constructs a new JavaScript object and returns a proxy
-  // to it.
-  var center = new JsObject(google_maps['LatLng'], [-34.397, 150.644]);
+  LatLng coordinateBarstow = new LatLng(34.905642,-117.018921); 
+  addMarkerOnCity(map, coordinateBarstow, 'Barstow', '20 Juin');
 
-  var mapTypeId = google_maps['MapTypeId']['ROADMAP'];
+}
 
-  // new JsObject.jsify() recursively converts a collection of Dart objects
-  // to a collection of JavaScript objects and returns a proxy to it.
-  var mapOptions = new JsObject.jsify({
-      "center": center,
-      "zoom": 8,
-      "mapTypeId": mapTypeId
+void addMarkerOnCity(map, coordinate, city, date) {
+   var marker = new Marker(
+      new MarkerOptions()
+      ..position = coordinate
+      ..map = map
+      ..title = city
+  );
+  
+  var content = new DivElement();
+  var cityText = '<span class="colorCity"><b>' + city + '</b></span><p>le ' + date + '</p>'; 
+  content.innerHtml = cityText;
+  
+  var infoWindow = new InfoWindow(
+    new InfoWindowOptions()
+      ..content = content
+  );
+  
+  marker.onClick.listen((e) {
+    infoWindow.open(map, marker);
   });
-
-  // Nodes are passed though, or transferred, not proxied.
-  new JsObject(google_maps['Map'], [querySelector('#map-canvas'), mapOptions]);
 }
