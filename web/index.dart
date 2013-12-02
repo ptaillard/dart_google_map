@@ -2,53 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library google_maps;
-
-// This code is derived from
-// https://developers.google.com/maps/documentation/javascript/tutorial#HelloWorld
-// You can view the original JavaScript example at
-// https://developers.google.com/maps/documentation/javascript/examples/map-simple
-/*
 import 'dart:html';
 import 'package:js/js.dart' as js;
 import 'package:google_maps/google_maps.dart';
-
-DirectionsRenderer directionsDisplay;
-final DirectionsService directionsService = new DirectionsService();
-GMap map;
-
-void main() {
-  directionsDisplay = new DirectionsRenderer();
-  final chicago = new LatLng(41.850033, -87.6500523);
-  final mapOptions = new MapOptions()
-    ..zoom = 7
-    ..mapTypeId = MapTypeId.ROADMAP
-    ..center = chicago
-    ;
-  map = new GMap(querySelector("#map-canvas"), mapOptions);
-  directionsDisplay.map = map;
-
-  calcRoute();
-}
-
-void calcRoute() {
-  final start = "chicago, il";
-  final end = "st louis, mo";
-  final request = new DirectionsRequest()
-    ..origin = new LatLng(37.781298,-122.418648)
-    ..destination = new LatLng(34.911273,-117.015488) 
-    ..travelMode = TravelMode.DRIVING // TODO bad object in example DirectionsTravelMode
-    ;
-  directionsService.route(request, (DirectionsResult response, DirectionsStatus status) {
-    if (status == DirectionsStatus.OK) {
-      directionsDisplay.directions = response;
-    }
-  });
-}*/
-
-import 'dart:html';
-import 'package:js/js.dart' as js;
-import 'package:google_maps/google_maps.dart';
+import 'City.dart';
 
 final DirectionsService directionsService = new DirectionsService();
 DirectionsRenderer directionsDisplay;
@@ -57,36 +14,45 @@ GMap map;
 void main() {
   initGoogleMap();
  
-  createMarkerCity();
- 
-  querySelector("#startcity").appendHtml('<option value="0" data-latstart="37.781298" data-lngstart="-122.418648" data-latend="37.000668" data-lngend="-110.173627">Tout</option>');
-  querySelector("#startcity").appendHtml('<option value="0" data-latstart="37.781298" data-lngstart="-122.418648" data-latend="34.911273" data-lngend="-117.015488">San Francisco</option>');
-  querySelector("#startcity").appendHtml('<option value="1" data-latstart="34.911273" data-lngstart="-117.015488" data-latend="35.202428" data-lngend="-114.055359">Barstow</option>');
-  querySelector("#startcity").appendHtml('<option value="2" data-latstart="35.202428" data-lngstart="-114.055359" data-latend="36.061034" data-lngend="-112.142311">Kingman</option>');
-  querySelector("#startcity").appendHtml('<option value="3" data-latstart="36.061034" data-lngstart="-112.142311" data-latend="37.000668" data-lngend="-110.173627">Grand Canyon</option>');
+
+  City sanFrancisco = new City('San Francisco', new LatLng(37.781298,-122.418648));
+  City barstow = new City('Barstow', new LatLng(34.911273,-117.015488));
+  City kingman = new City('Kingman', new LatLng(35.202428,-114.055359));
+  City grandCanyon = new City('Grand Canyon', new LatLng(36.061034,-112.142311));
+  City monumentValley = new City('Monument Valley', new LatLng(37.000668,-110.173627));
+
+  addMarkerOnCity(map, sanFrancisco.getCoordinate(), sanFrancisco.getName(), '16 Juin');
+  addMarkerOnCity(map, barstow.getCoordinate(), barstow.getName(), '20 Juin');
+  addMarkerOnCity(map, kingman.getCoordinate(), kingman.getName(), '21 Juin');
+  addMarkerOnCity(map, grandCanyon.getCoordinate(), grandCanyon.getName(), '22 Juin');
+  addMarkerOnCity(map, monumentValley.getCoordinate(), monumentValley.getName(), '26 Juin');
+  
+  addAllCity(sanFrancisco, monumentValley);
+  addOptionStartCity(sanFrancisco, barstow);
+  addOptionStartCity(barstow, kingman);
+  addOptionStartCity(kingman, grandCanyon);
+  addOptionStartCity(grandCanyon, monumentValley);
+  
   
   querySelector('#startcity').onChange.listen((e) => computeRoute());
   
   computeRoute();
 }
 
-void createMarkerCity() {
-   LatLng coordinate = new LatLng(37.781298,-122.418648); 
-  addMarkerOnCity(map, coordinate, 'San Francisco', '16 Juin');
-  
-  LatLng coordinateBarstow = new LatLng(34.911273,-117.015488); 
-  addMarkerOnCity(map, coordinateBarstow, 'Barstow', '20 Juin');
-  
-  LatLng coordinateKingman = new LatLng(35.202428,-114.055359); 
-  addMarkerOnCity(map, coordinateKingman, 'Kingman', '21 Juin');
-  
-  LatLng coordinateGrandCanyon = new LatLng(36.061034,-112.142311); 
-  addMarkerOnCity(map, coordinateGrandCanyon, 'Grand Canyon', '22 Juin');
-  
-  LatLng coordinateMonumentValley = new LatLng(37.000668,-110.173627); 
-  addMarkerOnCity(map, coordinateMonumentValley, 'Monument Valley', '26 Juin');
-  
-  
+void addAllCity(City cityFrom, City cityTo) {
+  querySelector("#startcity").appendHtml('<option value="" data-latstart="' +  
+      cityFrom.getCoordinate().lat.toString() + '" data-lngstart="' +  
+      cityFrom.getCoordinate().lng.toString() + '" data-latend="' +  
+      cityTo.getCoordinate().lat.toString() + '" data-lngend="' +  
+      cityTo.getCoordinate().lng.toString() + '">' + 'Tout' + '</option>');
+}
+
+void addOptionStartCity(City cityFrom, City cityTo) {
+  querySelector("#startcity").appendHtml('<option value="" data-latstart="' +  
+      cityFrom.getCoordinate().lat.toString() + '" data-lngstart="' +  
+      cityFrom.getCoordinate().lng.toString() + '" data-latend="' +  
+      cityTo.getCoordinate().lat.toString() + '" data-lngend="' +  
+      cityTo.getCoordinate().lng.toString() + '">' + cityFrom.getName() + ' -> '+ cityTo.getName() + '</option>');
 }
 
 void initGoogleMap() {
