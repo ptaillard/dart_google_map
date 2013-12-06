@@ -1,38 +1,40 @@
 library TravelManager;
 
-import 'dart:html';
 import 'dart:collection';
 import 'package:google_maps/google_maps.dart';
+import 'LocationInfo.dart';
+import 'LocationMarker.dart';
+import 'LocationSelect.dart';
 import 'City.dart';
-import 'CityMarker.dart';
-import 'CitySelect.dart';
 
 class TravelManager {
   GMap map;
-  CityMarker marker;
-  CitySelect citySelect;
-  LinkedHashMap<int, City> cities;
+  LocationMarker marker;
+  LocationSelect placeSelect;
+  LinkedHashMap<int, LocationInfo> locationInfos;
   
   TravelManager(this.map){
-    this.cities = new LinkedHashMap();
-    this.marker = new CityMarker(this.map);
-    this.citySelect = new CitySelect(this, this.map);
+    this.locationInfos = new LinkedHashMap();
+    this.marker = new LocationMarker(this.map);
+    this.placeSelect = new LocationSelect(this, this.map);
   }
   
-  void appendArrivalCity(City city) {
-    if(cities.isNotEmpty) {
-      City previousCity = cities[cities.keys.last];
-      citySelect.appendSelectionRouteCityFromCityTo(previousCity, city);
+  void appendLocation(LocationInfo location) {
+    if(location is City) {
+      if(locationInfos.isNotEmpty) {
+        LocationInfo previousCity = locationInfos[locationInfos.keys.last];
+        placeSelect.appendSelectionRouteFromTo(previousCity, location);
+      }
+      locationInfos[location.hashCode] = location;
     }
-    cities[city.hashCode] = city;
-    marker.appendOn(city);
+    marker.appendOn(location);
   }
   
   void computeRoute() {
-    citySelect.computeRoute(cities[cities.keys.first], cities[cities.keys.last]);
+    placeSelect.computeRoute(locationInfos[locationInfos.keys.first], locationInfos[locationInfos.keys.last]);
   }
 
-  City getCity(int hashcode) {
-    return cities[hashcode];
+  LocationInfo getLocation(int hashcode) {
+    return locationInfos[hashcode];
   }
 }
