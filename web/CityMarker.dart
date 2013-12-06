@@ -14,8 +14,7 @@ class CityMarker {
         ..position = city.getCoordinate()
         ..map = map
         ..title = city.getName()
-        ..zIndex = 1000
-        ..icon = SymbolPath.CIRCLE;
+        ..zIndex = 1000;
     
     Marker marker = new Marker(option);
     
