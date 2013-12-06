@@ -17,11 +17,18 @@ void main() {
  
   travelManager = new TravelManager(map);
   
-  travelManager.appendArrivalCity(CityFactory.create('San Francisco', new LatLng(37.800101,-122.433132), new DateTime(2013, 06, 16)));
-  travelManager.appendArrivalCity(CityFactory.create('Barstow', new LatLng(34.844414,-117.084357), new DateTime(2013, 06, 20)));
-  travelManager.appendArrivalCity(CityFactory.create('Kingman', new LatLng(35.202428,-114.055359), new DateTime(2013, 06, 21)));
-  travelManager.appendArrivalCity(CityFactory.create('Grand Canyon', new LatLng(36.061034,-112.142311), new DateTime(2013, 06, 22)));
-  travelManager.appendArrivalCity(CityFactory.create('Monument Valley', new LatLng(37.000668,-110.173627), new DateTime(2013, 06, 26)));
+  travelManager.appendArrivalCity(CityFactory.create('San Francisco Aeroport', new LatLng(37.616407,-122.386507), new DateTime(2013, 06, 16)));//Coventry Motor Inn
+  travelManager.appendArrivalCity(CityFactory.create('San Francisco', new LatLng(37.800165,-122.433116), new DateTime(2013, 06, 16)));//Coventry Motor Inn
+  travelManager.appendArrivalCity(CityFactory.create('Barstow', new LatLng(34.844601,-117.08438), new DateTime(2013, 06, 22)));
+  travelManager.appendArrivalCity(CityFactory.create('Kingman', new LatLng(35.21126,-114.016511), new DateTime(2013, 06, 23)));
+  travelManager.appendArrivalCity(CityFactory.create('Grand Canyon', new LatLng(36.054598,-112.119729), new DateTime(2013, 06, 24)));
+  travelManager.appendArrivalCity(CityFactory.create('Monument Valley', new LatLng(36.726365,-110.254864), new DateTime(2013, 06, 27)));
+  travelManager.appendArrivalCity(CityFactory.create('Page', new LatLng(36.916514,-111.45511), new DateTime(2013, 06, 28)));
+  travelManager.appendArrivalCity(CityFactory.create('Bryce Canyon', new LatLng(37.674181,-112.158279), new DateTime(2013, 06, 29)));
+  travelManager.appendArrivalCity(CityFactory.create('Zion Canyon', new LatLng(37.180193,-113.006714), new DateTime(2013, 07, 03)));
+  travelManager.appendArrivalCity(CityFactory.create('Las Vegas', new LatLng(36.098181,-115.167416), new DateTime(2013, 07, 04)));
+  travelManager.appendArrivalCity(CityFactory.create('Los Angeles', new LatLng(34.103339,-118.340587), new DateTime(2013, 07, 08)));
+  travelManager.appendArrivalCity(CityFactory.create('Los Angeles Aeroport', new LatLng(33.942719,-118.408169), new DateTime(2013, 07, 10)));
   
   travelManager.computeRoute();
 }
