@@ -12,7 +12,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 
 GMap map;
-TravelManager travelManager;
+
 
 void main() {
   initializeDateFormatting("fr_FR", null).then((_) => launchApp());
@@ -21,7 +21,7 @@ void main() {
 
 void launchApp() {
   initGoogleMap();
-  
+  TravelManager travelManager;
   travelManager = new TravelManager(map);
   
   travelManager.appendLocation(LocationFactory.createAeroport('San Francisco', new LatLng(37.616407,-122.386507), new DateTime(2013, 06, 16)));//Coventry Motor Inn

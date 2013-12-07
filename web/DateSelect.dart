@@ -1,30 +1,27 @@
-library LocationSelect;
+library DateSelect;
 
 import 'dart:html';
 import 'LocationInfo.dart';
 import 'RouteGenerator.dart';
+import "package:intl/intl.dart";
 
-class LocationSelect {
+class DateSelect {
   
   RouteGenerator routeGenerator;
   SelectElement select;
   
-  LocationSelect(this.routeGenerator) {
-    this.select = querySelector("#startcity");
+  DateSelect(this.routeGenerator) {
+    this.select = querySelector("#startdate");
   }
   
   void computeRoute(locationFirst, locationLast) {
-    _appendTotalRoute(locationFirst, locationLast);
     select.onChange.listen((e) => _updateRoute());
     _updateRoute();
   }
 
   void appendSelectionRouteFromTo(LocationInfo cityFrom, LocationInfo cityTo) {
-    _createSelectOptionRoute(cityFrom, cityTo, cityFrom.getName() + ' -> '+ cityTo.getName(), 0);
-  }
-  
-  void _appendTotalRoute(LocationInfo cityFrom, LocationInfo cityTo) {
-    _createSelectOptionRoute(cityFrom, cityTo, 'Tout', 1);
+    _createSelectOptionRoute(cityFrom, cityTo, new DateFormat.yMMMMd("fr_FR").format(cityFrom.getDate()).toString() + 
+          ' -> '+ new DateFormat.yMMMMd("fr_FR").format(cityTo.getDate()).toString(), 0);
   }
 
   void _createSelectOptionRoute(LocationInfo cityFrom, LocationInfo cityTo, String label, int total) {
@@ -42,6 +39,4 @@ class LocationSelect {
     
     routeGenerator.generateRoute(fromKey, toKey, total);
   }
-
-  
 }
