@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:html';
-import 'package:js/js.dart' as js;
 import 'package:google_maps/google_maps.dart';
 import 'LocationFactory.dart';
 import 'TravelManager.dart';
@@ -26,7 +25,6 @@ void launchApp() {
   
   travelManager.appendLocation(LocationFactory.createAeroport('San Francisco', new LatLng(37.616407,-122.386507), new DateTime(2013, 06, 16)));//Coventry Motor Inn
   travelManager.appendLocation(LocationFactory.createCity('San Francisco', new LatLng(37.800165,-122.433116), new DateTime(2013, 06, 16)));//Coventry Motor Inn
-  travelManager.appendLocation(LocationFactory.createRestaurant('Resto', new LatLng(38.800165,-122.433116), new DateTime(2013, 06, 16)));
   travelManager.appendLocation(LocationFactory.createCity('Barstow', new LatLng(34.844601,-117.08438), new DateTime(2013, 06, 22)));
   travelManager.appendLocation(LocationFactory.createVisit('Calico', new LatLng(34.9498,-116.864111), new DateTime(2013, 06, 22)));
   travelManager.appendLocation(LocationFactory.createCity('Kingman', new LatLng(35.21126,-114.016511), new DateTime(2013, 06, 23)));
@@ -40,6 +38,18 @@ void launchApp() {
   travelManager.appendLocation(LocationFactory.createAeroport('Los Angeles', new LatLng(33.942719,-118.408169), new DateTime(2013, 07, 10)));
   
   travelManager.computeRoute();
+  
+  map.onRightclick.listen((e) => afficheMenu(e));
+  map.onClick.listen((e) => cacheMenu(e));
+  querySelector('#MenuVille').onClick.listen((e) => afficheMenu(e));
+}
+
+void afficheMenu(e) {
+  querySelector('#infos')..text = 'Menu';
+}
+
+void cacheMenu(e) {
+  querySelector('#infos')..text = '';
 }
 
 void initGoogleMap() {

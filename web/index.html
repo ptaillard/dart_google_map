@@ -16,23 +16,45 @@
     <meta charset="utf-8">
     <title>Map</title>
     <link type="text/css" rel="stylesheet" href="index.css">
-    <style type="text/css">
-      
-    </style>
+    <style type="text/css"></style>
+    <link rel="stylesheet" href="./css/ui-lightness/jquery-ui.min.css">
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery-ui.min.js"></script>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?sensor=false">
     </script>
+    
+    <script>
+      $(function() {
+        $( "#menu" ).menu();
+      });
+      </script>
+      <style>
+      .ui-menu { width: 150px; }
+      </style>
+      
   </head>
   <body>
+    <ul id="menu">
+      <li><a id="MenuVille" href="#">Ville</a></li>
+      <li>-</li>
+      <li><a href="#">Aeroport</a></li>
+      <li>-</li>
+      <li><a href="#">Restaurant</a></li>
+      <li><a href="#">Visite</a></li>
+      <!--li class="ui-state-disabled"><a href="#">Amesville</a></li-->
+    </ul>
     <div>Map trip<span id="infos"></span></div>
     <div>
-    <b>Start city: </b>
-    <select id="startcity">
-    </select>
-    <b>Start date: </b>
-    <select id="startdate">
-    </select>
+      <b>Start city: </b>
+      <select id="startcity">
+      </select>
+      
+      <b>Start date: </b>
+      <select id="startdate">
+      </select>
     </div>
+    <div id="distanceInfos"></div>
     <div id="map-canvas"></div>
     <script type="application/dart" src="index.dart"></script>
     <script src="packages/browser/dart.js"></script>
