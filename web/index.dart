@@ -20,8 +20,6 @@ void launchApp() {
   
   TravelManager travelManager;
   travelManager = new TravelManager(map);
-  ActionsMapManager actionsMapManager = new ActionsMapManager(travelManager, map);
-  
   
   travelManager.appendLocation(LocationFactory.createAeroport('San Francisco', new LatLng(37.616407,-122.386507), new DateTime(2013, 06, 16)));//Coventry Motor Inn
   travelManager.appendLocation(LocationFactory.createCity('San Francisco', new LatLng(37.800165,-122.433116), new DateTime(2013, 06, 16)));//Coventry Motor Inn
@@ -38,6 +36,8 @@ void launchApp() {
   travelManager.appendLocation(LocationFactory.createAeroport('Los Angeles', new LatLng(33.942719,-118.408169), new DateTime(2013, 07, 10)));
   
   travelManager.computeRoute();
+  
+  ActionsMapManager actionsMapManager = new ActionsMapManager(travelManager, map);
 }
 
 

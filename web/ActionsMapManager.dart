@@ -17,16 +17,10 @@ class ActionsMapManager {
   }
   
   void initEvent() {
-    map.onRightclick.listen((e) => afficheMenu(e));
-    map.onClick.listen((e) => cacheMenu(e));
+    map.onClick.listen((e) => addLocation(e));
     querySelector('#move').onClick.listen((e) => actionUserMove(e));
     querySelector('#ville').onClick.listen((e) => actionUserVille(e));
     querySelector('#aeroport').onClick.listen((e) => actionUserAeroport(e));
-  }
-
-  
-  void afficheMenu(e) {
-    querySelector('#infos')..text = 'Menu';
   }
 
   void actionUserVille(e) {
@@ -44,13 +38,13 @@ class ActionsMapManager {
     querySelector('#infos')..text = 'Action move';
   }
 
-  void cacheMenu(e) {
+  void addLocation(e) {
     querySelector('#infos')..text = '';
     if(action == 1) {
-      travelManager.appendLocation(LocationFactory.createCity('city', e.latlng(), new DateTime(2013, 06, 16)));
+      travelManager.appendLocation(LocationFactory.createCity('city', new LatLng(37.800165,-122.433116), new DateTime(2013, 06, 16)));
     }
-    else {
-      travelManager.appendLocation(LocationFactory.createAeroport('aeroport', e.latlng(), new DateTime(2013, 06, 16)));
+    else if(action == 2) {
+      travelManager.appendLocation(LocationFactory.createAeroport('aeroport', new LatLng(37.700165,-122.533116), new DateTime(2013, 06, 16)));
     }
   }
 }
