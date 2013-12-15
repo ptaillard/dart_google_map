@@ -15,35 +15,44 @@
   <head>
     <meta charset="utf-8">
     <title>Map</title>
-    <link type="text/css" rel="stylesheet" href="index.css">
+    <link type="text/css" rel="stylesheet" href="./css/index.css">
     <style type="text/css"></style>
-    <link rel="stylesheet" href="./css/ui-lightness/jquery-ui.min.css">
+    <link href="./css/jquery.toolbars.css" rel="stylesheet" />
+    <link href="./css/bootstrap.icons.css" rel="stylesheet" />
     <script src="./js/jquery.min.js"></script>
-    <script src="./js/jquery-ui.min.js"></script>
+    <script src="./js/jquery.toolbar.js"></script>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?sensor=false">
     </script>
     
     <script>
-      $(function() {
-        $( "#menu" ).menu();
+      $( document ).ready(function() {
+        $('#user-toolbar').toolbar({
+        	content: '#user-toolbar-options', 
+        	position: 'bottom',
+        	hideOnClick: true
+        });
+        $('#user-toolbar-options').remove();
+        
+        $('#user-toolbar').on('toolbarItemClick',
+          	function( event ) {
+      			$(this).addClass();
+      	}
+        );
       });
       </script>
-      <style>
-      .ui-menu { width: 150px; }
-      </style>
-      
   </head>
   <body>
-    <ul id="menu">
-      <li><a id="MenuVille" href="#">Ville</a></li>
-      <li>-</li>
-      <li><a href="#">Aeroport</a></li>
-      <li>-</li>
-      <li><a href="#">Restaurant</a></li>
-      <li><a href="#">Visite</a></li>
-      <!--li class="ui-state-disabled"><a href="#">Amesville</a></li-->
-    </ul>
+    <div style="display:none" id="user-toolbar-options">
+      <a id="move" class="move" title="Deplacement sur la carte"><i class="icon-move"></i></a>
+      <a id="ville" class="ville" title="Ajouter un hotel"><i class="icon-home"></i></a>
+      <a id="aeroport" class="aeroport" title="Ajouter un aeroport"><i class="icon-plane"></i></a>
+      <a id="restaurant" class="restaurant" title="Ajouter un restaurant"><i class="icon-glass"></i></a>
+      <a id="visite" class="visite" title="Ajouter une visite"><i class="icon-map-marker"></i></a>
+    </div>
+    
+    <div id="user-toolbar" class="settings-button"><img src="images/icon-cog-small.png"></div>
+      
     <div>Map trip<span id="infos"></span></div>
     <div>
       <b>Start city: </b>
@@ -55,7 +64,9 @@
       </select>
     </div>
     <div id="distanceInfos"></div>
-    <div id="map-canvas"></div>
+    <div id="map-canvas">
+    
+    </div>
     <script type="application/dart" src="index.dart"></script>
     <script src="packages/browser/dart.js"></script>
     <script src="packages/browser/interop.js"></script>

@@ -6,22 +6,22 @@ import 'dart:html';
 import 'package:google_maps/google_maps.dart';
 import 'LocationFactory.dart';
 import 'TravelManager.dart';
+import 'ActionsMapManager.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
 
 
-GMap map;
-
-
 void main() {
   initializeDateFormatting("fr_FR", null).then((_) => launchApp());
-  
 }
 
 void launchApp() {
-  initGoogleMap();
+  GMap map = initGoogleMap();
+  
   TravelManager travelManager;
   travelManager = new TravelManager(map);
+  ActionsMapManager actionsMapManager = new ActionsMapManager(travelManager, map);
+  
   
   travelManager.appendLocation(LocationFactory.createAeroport('San Francisco', new LatLng(37.616407,-122.386507), new DateTime(2013, 06, 16)));//Coventry Motor Inn
   travelManager.appendLocation(LocationFactory.createCity('San Francisco', new LatLng(37.800165,-122.433116), new DateTime(2013, 06, 16)));//Coventry Motor Inn
@@ -38,21 +38,11 @@ void launchApp() {
   travelManager.appendLocation(LocationFactory.createAeroport('Los Angeles', new LatLng(33.942719,-118.408169), new DateTime(2013, 07, 10)));
   
   travelManager.computeRoute();
-  
-  map.onRightclick.listen((e) => afficheMenu(e));
-  map.onClick.listen((e) => cacheMenu(e));
-  querySelector('#MenuVille').onClick.listen((e) => afficheMenu(e));
 }
 
-void afficheMenu(e) {
-  querySelector('#infos')..text = 'Menu';
-}
 
-void cacheMenu(e) {
-  querySelector('#infos')..text = '';
-}
 
-void initGoogleMap() {
+GMap initGoogleMap() {
   
   final SanFrancisco = new LatLng(37.781298,-122.418648);
   final mapOptions = new MapOptions()
@@ -60,5 +50,5 @@ void initGoogleMap() {
     ..mapTypeId = MapTypeId.ROADMAP
     ..center = SanFrancisco
     ;
-  map = new GMap(querySelector("#map-canvas"), mapOptions);
+  return new GMap(querySelector("#map-canvas"), mapOptions);
 }
