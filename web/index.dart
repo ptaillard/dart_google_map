@@ -4,9 +4,9 @@
 
 import 'dart:html';
 import 'package:google_maps/google_maps.dart';
-import 'LocationFactory.dart';
-import 'TravelManager.dart';
-import 'ActionsMapManager.dart';
+import 'src/location/LocationFactory.dart';
+import 'src/TravelManager.dart';
+import 'src/actionsMap/ActionsMapManager.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
 
