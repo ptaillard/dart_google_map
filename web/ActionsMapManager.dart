@@ -40,11 +40,12 @@ class ActionsMapManager {
 
   void addLocation(e) {
     querySelector('#infos')..text = '';
+    LatLng l = e.latLng;
     if(action == 1) {
-      travelManager.appendLocation(LocationFactory.createCity('city', new LatLng(37.800165,-122.433116), new DateTime(2013, 06, 16)));
+      travelManager.appendLocation(LocationFactory.createCity('city', e.latLng, new DateTime(2013, 06, 16)));
     }
     else if(action == 2) {
-      travelManager.appendLocation(LocationFactory.createAeroport('aeroport', new LatLng(37.700165,-122.533116), new DateTime(2013, 06, 16)));
+      travelManager.appendLocation(LocationFactory.createAeroport('aeroport', e.latLng, new DateTime(2013, 06, 16)));
     }
   }
 }
