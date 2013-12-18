@@ -27,7 +27,7 @@ class ActionsMapManager {
     querySelector('#ville').onClick.listen((e) => actionUserVille(e));
     querySelector('#aeroport').onClick.listen((e) => actionUserAeroport(e));
   }
-
+  
   void actionUserVille(e) {
     actionInterface = new ActionCity(travelManager);
     querySelector('#infos')..text = 'Action ville';

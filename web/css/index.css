@@ -2,15 +2,35 @@
 
 html { height: 100% }
 body { height: 100%; margin: 0; padding: 0 }
+
+#user-panel {
+    position: absolute;
+    left: 0px;
+    top: 10px;
+    bottom: 0px;
+    width: 350px;
+    z-index:1000;
+    background-color: white;
+}
+
+#user-panel-button-display  {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 14px;
+  height: 14px;
+  z-index:1001;
+}
+
 #map-canvas { height: 100% }
 
-  #user-toolbar {
-        position: absolute;
-        top: 130px;
-        right: 120px;
-        background-image: url("../images/pattern-2.png");
-        z-index:1000;
-      }
+#user-toolbar {
+  position: absolute;
+  top: 5px;
+  right: 120px;
+  background-image: url("../images/pattern-2.png");
+  z-index:1000;
+}
       
 .settings-button {
   width: 36px;
@@ -22,7 +42,6 @@ body { height: 100%; margin: 0; padding: 0 }
   background-color: #343433;
   z-index: 2;
   display: block;
-  margin: 20px 44px;
 }
 
 .settings-button:hover, .pressed {

@@ -20,29 +20,38 @@
     <link href="./css/jquery.toolbars.css" rel="stylesheet" />
     <link href="./css/bootstrap.icons.css" rel="stylesheet" />
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery-ui.min.js"></script>
     <script src="./js/jquery.toolbar.js"></script>
+    <script src="./js/userPanel.js"></script>
+    <script src="./js/userToolbar.js"></script>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?sensor=false">
     </script>
     
     <script>
       $( document ).ready(function() {
-        $('#user-toolbar').toolbar({
-        	content: '#user-toolbar-options', 
-        	position: 'bottom',
-        	hideOnClick: true
-        });
-        $('#user-toolbar-options').remove();
-        
-        $('#user-toolbar').on('toolbarItemClick',
-          	function( event ) {
-      			$(this).addClass();
-      	}
-        );
+        userToolbar.init();
+        userPanel.init();
       });
       </script>
   </head>
   <body>
+    <div id="user-panel-button-display" class="icon-arrow-left"></div>
+    <div id="user-panel">
+      <br>
+      <div>Map trip<span id="infos"></span></div>
+      <div>
+        <b>Start city: </b>
+        <select id="startcity">
+        </select>
+        
+        <b>Start date: </b>
+        <select id="startdate">
+        </select>
+      </div>
+      <div id="distanceInfos"></div>
+    </div>
+    
     <div style="display:none" id="user-toolbar-options">
       <a id="move" class="move" title="Deplacement sur la carte"><i class="icon-move"></i></a>
       <a id="ville" class="ville" title="Ajouter un hotel"><i class="icon-home"></i></a>
@@ -53,19 +62,7 @@
     
     <div id="user-toolbar" class="settings-button"><img src="images/icon-cog-small.png"></div>
       
-    <div>Map trip<span id="infos"></span></div>
-    <div>
-      <b>Start city: </b>
-      <select id="startcity">
-      </select>
-      
-      <b>Start date: </b>
-      <select id="startdate">
-      </select>
-    </div>
-    <div id="distanceInfos"></div>
     <div id="map-canvas">
-    
     </div>
     <script type="application/dart" src="index.dart"></script>
     <script src="packages/browser/dart.js"></script>
