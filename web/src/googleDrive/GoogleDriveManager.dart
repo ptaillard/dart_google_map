@@ -14,6 +14,7 @@ class GoogleDriveManager extends EtatIdentificationListener {
   final InputElement fileId = querySelector("#fileId");
   final DivElement output = querySelector('#drive');
   final Element filePicker = querySelector('#filepicker');
+  final ButtonElement listDriveElement = querySelector('#listdrive'); 
   var token = null;
 
   GoogleDriveManager(){
@@ -23,6 +24,9 @@ class GoogleDriveManager extends EtatIdentificationListener {
     this.drive = new drivelib.Drive(auth);
     this.drive.makeAuthRequests = true;
     filePicker.onChange.listen(ajouteFichier);
+    listDriveElement.onClick.listen((e){
+      _list(e);
+    });
   }
   
   void login(token) {

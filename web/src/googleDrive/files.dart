@@ -85,7 +85,7 @@ Future <drivelib.FileList> list_files(oauth.Token token, String query){
   var auth = new oauth.SimpleOAuth2(token.data);
   var drive = new Drive(auth);
   drive.makeAuthRequests = true;
-  drive.files.list(maxResults:10,q:query).then((drivelib.FileList fileList){
+  drive.files.list(maxResults:50,q:query).then((drivelib.FileList fileList){
     completer.complete(fileList);
   });
   return completer.future;

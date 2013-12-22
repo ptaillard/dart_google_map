@@ -11,7 +11,7 @@ class UserIdentification {
   List<EtatIdentificationListener> listeners = new List<EtatIdentificationListener>();
   
   final CLIENT_ID = "796343192238.apps.googleusercontent.com";
-  final SCOPES = [drivelib.Drive.DRIVE_FILE_SCOPE];
+  final SCOPES = [drivelib.Drive.DRIVE_FILE_SCOPE, drivelib.Drive.DRIVE_SCOPE];
   
   var auth = null;
   
