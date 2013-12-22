@@ -15,6 +15,7 @@ class GoogleDriveManager extends EtatIdentificationListener {
   final DivElement output = querySelector('#drive');
   final Element filePicker = querySelector('#filepicker');
   final ButtonElement listDriveElement = querySelector('#listdrive'); 
+  final ButtonElement createDriveFile = querySelector('#createdrive'); 
   var token = null;
 
   GoogleDriveManager(){
@@ -27,19 +28,44 @@ class GoogleDriveManager extends EtatIdentificationListener {
     listDriveElement.onClick.listen((e){
       _list(e);
     });
+    createDriveFile.onClick.listen((e){
+      _create(e);
+    });
   }
   
   void login(token) {
     this.token = token;
     filePicker.style.display = "block";
+    listDriveElement..disabled = false;
   }
 
   void logout() {
     this.token = null;
     filePicker.style.display = "none";
     output..innerHtml = "<b>drive deconnect</b>";
+    listDriveElement..disabled = true;
   }
 
+  void _create(Event evt) {
+    //"C:\paysage.jpg"
+    var contentType = 'application/octet-stream';
+    //var uintlist = new Uint8List.fromList("test");
+    //var charcodes = new String.fromCharCodes([68]);
+    var charcodes = "Mon texte à afficher!!! ";
+    var base64Data = window.btoa(charcodes);
+    var newFile = new client.File.fromJson({"title": "monFichier.txt", "mimeType": contentType});
+  //  output..appendHtml("Uploading file...<br>");
+    drive.files.insert(newFile, content: base64Data, contentType: contentType)
+      .then((data) {
+        output..appendHtml("Uploaded file with ID <a href=\"${data.alternateLink}\" target=\"_blank\">${data.id}</a><br>");
+      })
+        .catchError((e) {
+          output..appendHtml("$e<br>");
+          return true;
+        });
+
+  }
+  
   void ajouteFichier(Event evt) {
     //"C:\paysage.jpg"
     var file = (evt.target as InputElement).files[0];
@@ -112,7 +138,8 @@ class GoogleDriveManager extends EtatIdentificationListener {
   
   void _list(e){
     if(isLogged()) {
-      list_files(token, "mimeType = 'application/vnd.google-apps.document' AND trashed = false").then((fileList){
+     // list_files(token, "mimeType = 'application/vnd.google-apps.document' AND trashed = false").then((fileList){
+      list_files(token, "mimeType = 'application/octet-stream' AND trashed = false").then((fileList){
         output.innerHtml = '';
         fileId.value = '';
         fileList.items.forEach((client.File file){
