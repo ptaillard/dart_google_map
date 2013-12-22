@@ -1,8 +1,13 @@
-name: google_maps_api_with_dart_js
-description: An app that displays a location using the JavaScript Google Maps API that is called using the dart:js library.
+name: Traveler_roadmap
+author: Pierre Taillard (pierre_taillard@yahoo.fr)
+description: "Allow travelers to create their own roadmap.\r\nUse Google map and google\
+  \ drive for creating and saving roadmap."
 environment:
   sdk: '>=0.8.10+6 <2.0.0'
 dependencies:
   browser: '>=0.9.0 <0.10.0'
+  google_drive_v2_api: any
   google_maps: any
+  google_oauth2_v2_api: any
   intl: any
+  polymer: any

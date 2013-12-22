@@ -1,20 +1,8 @@
 <!DOCTYPE html>
-<!-- Copyright (c) 2012, the Dart project authors.  Please see the AUTHORS file
-     for details. All rights reserved. Use of this source code is governed by a
-     BSD-style license that can be found in the LICENSE file.
--->
-
-<!--  
-  This code is derived from
-  https://developers.google.com/maps/documentation/javascript/tutorial#HelloWorld
-  You can view the original JavaScript example at
-  https://developers.google.com/maps/documentation/javascript/examples/map-simple
--->
-
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Map</title>
+    <title>Traveler roadmap</title>
     <link type="text/css" rel="stylesheet" href="./css/index.css">
     <style type="text/css"></style>
     <link href="./css/jquery.toolbars.css" rel="stylesheet" />
@@ -50,6 +38,11 @@
         </select>
       </div>
       <div id="distanceInfos"></div>
+      <button id="login">Login</button>
+      <button id="logout">Logout</button>
+      <input type="file" id="filepicker" style="display: none;" />
+      <div>File ID: <input style="width:40em;" type="text" id="fileId" placeholder="i.e. https://docs.google.com/document/d/<fileId>/edit" disabled="true"></input></div>
+      <div id="drive"></div>
     </div>
     
     <div style="display:none" id="user-toolbar-options">
