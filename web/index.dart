@@ -272,7 +272,6 @@ GMap initGoogleMap() {
   final mapOptions = new MapOptions()
     ..zoom = 7
     ..mapTypeId = MapTypeId.ROADMAP
-    ..center = SanFrancisco
-    ;
+    ..center = SanFrancisco;
   return new GMap(querySelector("#map-canvas"), mapOptions);
 }
