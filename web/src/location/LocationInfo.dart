@@ -25,4 +25,8 @@ class LocationInfo {
   String getIconMarker() {
     return this.iconMarker;
   }
+  
+  String toJSON() {
+    return "{" + "name:\"" + this.name + "\", lat:\"" + this.coordinate.lat.toString() + "\", lng:\"" + this.coordinate.lng.toString() + "\", date:\"" + this.date.toString() + "\", icon:\"" + this.iconMarker + "\"}";
+  }
 }

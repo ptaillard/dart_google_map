@@ -1,6 +1,7 @@
 library TravelManager;
 
 import 'dart:collection';
+import 'dart:convert';
 import 'package:google_maps/google_maps.dart';
 import 'location/LocationInfo.dart';
 import 'location/LocationMarker.dart';
@@ -42,5 +43,30 @@ class TravelManager {
 
   LocationInfo getLocation(int hashcode) {
     return locationInfos[hashcode];
+  }
+  
+  String toJSON() {
+    String travel = "[";
+    bool first = true;
+/*"""
+      [{"Dis":1111.1,"Flag":0,"Obj":{"ID":1,"Title":"Volvo 140"}},
+      {"Dis":2222.2,"Flag":0,"Obj":{"ID":2,"Title":"Volvo 240"}}]""";*/
+    for(int key in locationInfos.keys) {
+      if(first) {
+        first = false;
+      } else {
+        travel += ",";
+      }
+      travel += "{" + key.toString() + ":";
+      travel += locationInfos[key].toJSON();
+      travel += "}";
+    }
+    travel += "]";
+    print(travel);
+    return travel;
+  }
+  
+  void fromJSON(String jsonToParse) {
+    locationInfos = JSON.decode(jsonToParse);
   }
 }

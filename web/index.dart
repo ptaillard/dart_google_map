@@ -40,10 +40,11 @@ void launchApp() {
   
   travelManager.computeRoute();
   
+  
   ActionsMapManager actionsMapManager = new ActionsMapManager(travelManager, map);
   
   UserIdentification userIdentification = new UserIdentification();
-  GoogleDriveManager gDriveManager = new GoogleDriveManager();
+  GoogleDriveManager gDriveManager = new GoogleDriveManager(travelManager);
   userIdentification.addListener(gDriveManager);
 }
 

@@ -7,6 +7,7 @@ import 'files.dart';
 
 import "package:google_drive_v2_api/drive_v2_api_browser.dart" as drivelib;
 import "package:google_drive_v2_api/drive_v2_api_client.dart" as client;
+import '../TravelManager.dart';
 
 class GoogleDriveManager extends EtatIdentificationListener {
   
@@ -16,9 +17,12 @@ class GoogleDriveManager extends EtatIdentificationListener {
   final Element filePicker = querySelector('#filepicker');
   final ButtonElement listDriveElement = querySelector('#listdrive'); 
   final ButtonElement createDriveFile = querySelector('#createdrive'); 
+  final InputElement filename = querySelector("#filename");
   var token = null;
+  TravelManager travelManager;
 
-  GoogleDriveManager(){
+  GoogleDriveManager(TravelManager travelManager){
+    this.travelManager = travelManager;
   }
   
   void authentification(auth) {
@@ -47,13 +51,18 @@ class GoogleDriveManager extends EtatIdentificationListener {
   }
 
   void _create(Event evt) {
-    //"C:\paysage.jpg"
     var contentType = 'application/octet-stream';
     //var uintlist = new Uint8List.fromList("test");
     //var charcodes = new String.fromCharCodes([68]);
-    var charcodes = "Mon texte à afficher!!! ";
+    var charcodes = travelManager.toJSON();
     var base64Data = window.btoa(charcodes);
-    var newFile = new client.File.fromJson({"title": "monFichier.txt", "mimeType": contentType});
+    String currentFileName = "monFichier.txt";
+    String inputFileName = filename.value;
+    if(inputFileName.isNotEmpty) {
+      currentFileName = inputFileName;
+    }
+    
+    var newFile = new client.File.fromJson({"title": currentFileName, "mimeType": contentType});
   //  output..appendHtml("Uploading file...<br>");
     drive.files.insert(newFile, content: base64Data, contentType: contentType)
       .then((data) {
