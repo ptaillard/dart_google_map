@@ -18,6 +18,7 @@ class ActionsMapManager {
   ActionsMapManager(TravelManager travelManager, GMap map) {
     this.travelManager = travelManager;
     this.map = map;
+    actionInterface = new ActionNop();
     initEvent();
   }
   
