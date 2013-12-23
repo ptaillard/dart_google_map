@@ -11,12 +11,13 @@ import '../TravelManager.dart';
 
 class GoogleDriveManager extends EtatIdentificationListener {
   
-  var drive = null;
+  drivelib.Drive drive = null;
   final InputElement fileId = querySelector("#fileId");
   final DivElement output = querySelector('#drive');
   final Element filePicker = querySelector('#filepicker');
   final ButtonElement listDriveElement = querySelector('#listdrive'); 
   final ButtonElement createDriveFile = querySelector('#createdrive'); 
+  final ButtonElement loadDriveFile = querySelector('#loaddrive'); 
   final InputElement filename = querySelector("#filename");
   var token = null;
   TravelManager travelManager;
@@ -34,6 +35,9 @@ class GoogleDriveManager extends EtatIdentificationListener {
     });
     createDriveFile.onClick.listen((e){
       _create(e);
+    });
+    loadDriveFile.onClick.listen((e){
+      lireFichier(e);
     });
   }
   
@@ -73,6 +77,15 @@ class GoogleDriveManager extends EtatIdentificationListener {
           return true;
         });
 
+  }
+  
+  void lireFichier(Event evt) {
+    drive.files.get("0B1LjFaPTkdq4ZFpZZHpIQ2Fydlk").then((data) {
+      output..appendHtml("Content file = " + data.toJson());  
+    })
+    .catchError((e) {
+      output..appendHtml("$e<br>");
+    });
   }
   
   void ajouteFichier(Event evt) {
