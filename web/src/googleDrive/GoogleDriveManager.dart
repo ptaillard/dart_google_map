@@ -21,7 +21,7 @@ class GoogleDriveManager extends EtatIdentificationListener {
   final AnchorElement loadDriveFile = querySelector('#loaddrive'); 
   final InputElement filename = querySelector("#filename");
   final InputElement filetoload = querySelector("#filetoload");
-  final DivElement infoCarteSelection = querySelector('#info-carte-selection'); 
+  final FormElement infoCarteSelection = querySelector('#info-carte-selection'); 
   var token = null;
   TravelManager travelManager;
 
@@ -158,9 +158,12 @@ class GoogleDriveManager extends EtatIdentificationListener {
     if(isLogged()) {
      // list_files(token, "mimeType = 'application/vnd.google-apps.document' AND trashed = false").then((fileList){
       list_files(token, "mimeType = 'application/octet-stream' AND trashed = false").then((fileList){
+        String contentList = "<ul class=\"uk-list uk-list-striped\">";
         fileList.items.forEach((client.File file){
-          displayListDrive.appendHtml("<div><a target='_blank' href='${file.alternateLink}'>${file.title}</a>: ${file.id}</div>");
+          contentList += "<li><a target='_blank' href='${file.alternateLink}'>${file.title}</a>: ${file.id}</li>";
         });
+        contentList += "</ul>";
+        displayListDrive.appendHtml(contentList);
       });
     }
   }

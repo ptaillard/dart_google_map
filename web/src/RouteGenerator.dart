@@ -97,7 +97,8 @@ class RouteGenerator {
         var results = response.rows[i].elements;
         for (var j = 0; j < results.length; j++) {
           if(results[j].distance != null) {
-            html.write('Départ: ${origins[i]}<br>Arrivée: ${destinations[j]}<br>Distance à parcourir: <b>${results[j].distance.text}</b><br>Durée: <b>${results[j].duration.text}</b>');
+            //html.write('Départ: ${origins[i]}<br>Arrivée: ${destinations[j]}<br>Distance à parcourir: <b>${results[j].distance.text}</b><br>Durée: <b>${results[j].duration.text}</b>');
+            html.write('Distance à parcourir: <b>${results[j].distance.text}</b><br>Durée: <b>${results[j].duration.text}</b>');
           }
         }
       }

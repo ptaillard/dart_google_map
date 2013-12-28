@@ -36,6 +36,10 @@ body { height: 100%; margin: 0; padding: 0 }
   margin: 5px;
 }
 
+#user-panel button {
+  margin: 5px;
+}
+
 #user-panel-button-display  {
   position: absolute;
   left: 5px;
