@@ -15,16 +15,14 @@ class UserIdentification {
   
   var auth = null;
   
-  var loginElement = querySelector('#login') as ButtonElement; 
-  var logoutElement = querySelector('#logout') as ButtonElement;
+  var loginElement = querySelector('#login') as AnchorElement; 
+  var logoutElement = querySelector('#logout') as AnchorElement;
   
   UserIdentification(){
     this.auth = new oauth.GoogleOAuth2(CLIENT_ID, SCOPES);
     
     loginElement.onClick.listen((e){
       _getToken().then((token){
-        loginElement..disabled = true;
-        logoutElement..disabled = false;
         login(token);
       });
     });
@@ -54,8 +52,6 @@ class UserIdentification {
 
   void deconnect(e) {
     auth.logout();
-    loginElement..disabled = false;
-    logoutElement..disabled = true;
     logout();
   }
   

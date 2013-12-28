@@ -1,73 +1,73 @@
 library GoogleDriveManager;
 
 import 'dart:html';
-import "dart:typed_data";
 import 'EtatIdentificationListener.dart';
 import 'files.dart';
 
 import "package:google_drive_v2_api/drive_v2_api_browser.dart" as drivelib;
 import "package:google_drive_v2_api/drive_v2_api_client.dart" as client;
 import '../TravelManager.dart';
+import 'UserIdentification.dart';
 
 class GoogleDriveManager extends EtatIdentificationListener {
   
   drivelib.Drive drive = null;
+  UserIdentification userIdentification = null;
   final InputElement fileId = querySelector("#fileId");
   final DivElement output = querySelector('#drive');
-  final Element filePicker = querySelector('#filepicker');
-  final ButtonElement listDriveElement = querySelector('#listdrive'); 
-  final ButtonElement createDriveFile = querySelector('#createdrive'); 
-  final ButtonElement loadDriveFile = querySelector('#loaddrive'); 
+  final DivElement displayListDrive = querySelector('#display-list-drive');
+  final AnchorElement listDriveElement = querySelector('#listdrive'); 
+  final AnchorElement createDriveFile = querySelector('#createdrive'); 
+  final AnchorElement loadDriveFile = querySelector('#loaddrive'); 
   final InputElement filename = querySelector("#filename");
+  final InputElement filetoload = querySelector("#filetoload");
+  final DivElement infoCarteSelection = querySelector('#info-carte-selection'); 
   var token = null;
   TravelManager travelManager;
 
   GoogleDriveManager(TravelManager travelManager){
+    infoCarteSelection.hidden = true;
+    this.userIdentification = new UserIdentification();
+    this.userIdentification.addListener(this);
     this.travelManager = travelManager;
   }
   
   void authentification(auth) {
     this.drive = new drivelib.Drive(auth);
     this.drive.makeAuthRequests = true;
-    filePicker.onChange.listen(ajouteFichier);
     listDriveElement.onClick.listen((e){
       _list(e);
     });
     createDriveFile.onClick.listen((e){
-      _create(e);
+      String filenameToSave = _getFilename();
+      _create(e, filenameToSave);
     });
     loadDriveFile.onClick.listen((e){
-      lireFichier(e);
+      _lireFichier(e);
     });
+  }
+  
+  String _getFilename() {
+    return filename.value; 
+   
   }
   
   void login(token) {
     this.token = token;
-    filePicker.style.display = "block";
-    listDriveElement..disabled = false;
+    output.innerHtml = token.toString();
   }
 
   void logout() {
     this.token = null;
-    filePicker.style.display = "none";
     output..innerHtml = "<b>drive deconnect</b>";
-    listDriveElement..disabled = true;
   }
 
-  void _create(Event evt) {
+  void _create(Event evt, String filenameToSave) {
     var contentType = 'application/octet-stream';
-    //var uintlist = new Uint8List.fromList("test");
-    //var charcodes = new String.fromCharCodes([68]);
     var charcodes = travelManager.toJSON();
     var base64Data = window.btoa(charcodes);
-    String currentFileName = "monFichier.txt";
-    String inputFileName = filename.value;
-    if(inputFileName.isNotEmpty) {
-      currentFileName = inputFileName;
-    }
     
-    var newFile = new client.File.fromJson({"title": currentFileName, "mimeType": contentType});
-  //  output..appendHtml("Uploading file...<br>");
+    var newFile = new client.File.fromJson({"title": filenameToSave, "mimeType": contentType});
     drive.files.insert(newFile, content: base64Data, contentType: contentType)
       .then((data) {
         output..appendHtml("Uploaded file with ID <a href=\"${data.alternateLink}\" target=\"_blank\">${data.id}</a><br>");
@@ -79,46 +79,41 @@ class GoogleDriveManager extends EtatIdentificationListener {
 
   }
   
-  void lireFichier(Event evt) {
-    drive.files.get("0B1LjFaPTkdq4ZFpZZHpIQ2Fydlk").then((data) {
-      output..appendHtml("Content file = " + data.toJson());  
+  void _lireFichier(Event evt) {
+    var fileid = filetoload.value;
+    drive.files.get(fileid).then((data) {
+      output.appendHtml("Got $fileid<br><br>");
+      output..appendHtml("Content file = " + data.downloadUrl);
+      _makeRequest(data.downloadUrl);
+      infoCarteSelection.hidden = false;
     })
     .catchError((e) {
       output..appendHtml("$e<br>");
     });
   }
   
-  void ajouteFichier(Event evt) {
-    //"C:\paysage.jpg"
-    var file = (evt.target as InputElement).files[0];
-    var reader = new FileReader();
-    reader.readAsArrayBuffer(file);
-    reader.onLoad.listen((Event e) {
-      var contentType = file.type;
-      contentType = 'application/octet-stream';
-  
-      var uintlist = new Uint8List.fromList(reader.result);
-      var charcodes = new String.fromCharCodes(uintlist);
-      var base64Data = window.btoa(charcodes);
-      var newFile = new client.File.fromJson({"title": file.name, "mimeType": contentType});
-      output..appendHtml("Uploading file...<br>");
-      drive.files.insert(newFile, content: base64Data, contentType: contentType)
-        .then((data) {
-          output..appendHtml("Uploaded file with ID <a href=\"${data.alternateLink}\" target=\"_blank\">${data.id}</a><br>");
-        })
-          .catchError((e) {
-            output..appendHtml("$e<br>");
-            return true;
-          });
-  
-      });
+  void _makeRequest(String urlDownload) {
+    HttpRequest httpRequest = new HttpRequest();
+    httpRequest
+        ..open('GET', urlDownload)
+        ..setRequestHeader("Content-type", "application/octet-stream")
+        ..setRequestHeader("Authorization", "Bearer " + token.data)
+        ..onLoadEnd.listen((e) => _requestComplete(httpRequest))
+        ..send(""); // Preparing the http request and send to server
+  }
+
+  void _requestComplete(HttpRequest request) {
+    if (request.status == 200) {
+      travelManager.fromJSON(request.responseText);
+    } else {
+      output..innerHtml = "Request failed, status={" + request.status.toString() + "}";
+    }
   }
   
   bool isLogged() {
     return token != null;
   }
-  
-  
+  /*
   void _get(e) {
     if(isLogged()) {
       var _fileId = fileId.value;
@@ -156,21 +151,20 @@ class GoogleDriveManager extends EtatIdentificationListener {
         output.text = file.toString();
       });
     }
-  }
+  }*/
   
   void _list(e){
+    displayListDrive.innerHtml = '';
     if(isLogged()) {
      // list_files(token, "mimeType = 'application/vnd.google-apps.document' AND trashed = false").then((fileList){
       list_files(token, "mimeType = 'application/octet-stream' AND trashed = false").then((fileList){
-        output.innerHtml = '';
-        fileId.value = '';
         fileList.items.forEach((client.File file){
-          output.appendHtml("<div><a target='_blank' href='${file.alternateLink}'>${file.title}</a>: ${file.id}</div>");
+          displayListDrive.appendHtml("<div><a target='_blank' href='${file.alternateLink}'>${file.title}</a>: ${file.id}</div>");
         });
       });
     }
   }
-  
+  /*
   void _patch(e) {
     if(isLogged()) {
       var _fileId = fileId.value;
@@ -219,6 +213,6 @@ class GoogleDriveManager extends EtatIdentificationListener {
         output.text = file.toString();
       });
     }
-  }
+  }*/
   
 }

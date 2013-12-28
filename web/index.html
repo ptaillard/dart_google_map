@@ -3,15 +3,18 @@
   <head>
     <meta charset="utf-8">
     <title>Traveler roadmap</title>
-    <link type="text/css" rel="stylesheet" href="./css/index.css">
-    <style type="text/css"></style>
-    <link href="./css/jquery.toolbars.css" rel="stylesheet" />
-    <link href="./css/bootstrap.icons.css" rel="stylesheet" />
-    <script src="./js/jquery.min.js"></script>
-    <script src="./js/jquery-ui.min.js"></script>
-    <script src="./js/jquery.toolbar.js"></script>
-    <script src="./js/userPanel.js"></script>
-    <script src="./js/userToolbar.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/index.css">
+    <link href="css/jquery.toolbars.css" rel="stylesheet" />
+    <link href="css/bootstrap.icons.css" rel="stylesheet" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="lib/uikit/css/uikit.almost-flat.min.css" />
+        
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.toolbar.js"></script>
+    <script src="js/userPanel.js"></script>
+    <script src="js/userToolbar.js"></script>
+    <script src="lib/uikit/js/uikit.min.js"></script>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?sensor=false">
     </script>
@@ -27,26 +30,56 @@
     <div id="user-panel-button-display" class="icon-arrow-left"></div>
     <div id="user-panel">
       <br>
-      <div>Map trip<span id="infos"></span></div>
-      <div>
+      <div id="titre-panel"><h2>Carte de voyage</h2></div><br>
+      <div class="separator"></div>
+      <a id="login" class="uk-button">Connexion</a>
+      <a id="logout" class="uk-button">Déconnexion</a>
+      <div class="separator"></div>
+      <a id="listdrive" class="uk-button" data-uk-modal="{target:'#list-drive-selection'}">Charger une carte</a>
+      <div id="list-drive-selection" class="uk-modal">
+          <div class="uk-modal-dialog uk-modal-dialog-slide">
+              <a class="uk-modal-close uk-close"></a>
+              <h2>Sélectionner la carte à charger</h2>
+              <input style="width:40em;" type="text" id="filetoload" placeholder="fichier a charger"></input>
+              <br>
+              <div id="display-list-drive"></div>
+              <br><br>
+              <a id="loaddrive" class="uk-button uk-modal-close">Charger</a>
+              <a class="uk-button uk-modal-close">Annuler</a>
+          </div>
+      </div>
+      
+      <a id="save-to-drive" class="uk-button" data-uk-modal="{target:'#filename-selection'}">Enregistrer</a>
+      <div id="filename-selection" class="uk-modal">
+          <div class="uk-modal-dialog uk-modal-dialog-slide">
+              <a class="uk-modal-close uk-close"></a>
+              <h2>Nom de la carte</h2>
+              <input id="filename"></input><br><br>
+              <a id="createdrive" class="uk-button uk-modal-close">Enregistrer</a>
+              <a class="uk-button uk-modal-close">Annuler</a>
+          </div>
+      </div>
+      <a id="info-debug" class="uk-button" data-uk-modal="{target:'#debug-modal'}">Debug</a>
+      <div id="debug-modal" class="uk-modal">
+          <div class="uk-modal-dialog uk-modal-dialog-slide">
+              <a class="uk-modal-close uk-close"></a>
+              <h2>Debug</h2>
+              <span id="infos"></span>
+              <div id="drive"></div>
+              <a class="uk-button uk-modal-close">Fermer</a>
+          </div>
+      </div>
+      <div class="separator"></div>
+      <div id="info-carte-selection">
         <b>Start city: </b>
         <select id="startcity">
         </select>
-        
+        <br>
         <b>Start date: </b>
         <select id="startdate">
         </select>
+        <div id="distanceInfos"></div>
       </div>
-      <div id="distanceInfos"></div>
-      <button id="login">Login</button>
-      <button id="logout">Logout</button>
-      <button id="listdrive">Recharge fichiers</button>
-      <button id="createdrive">Creer un fichier</button>
-      <button id="loaddrive">Charger un fichier</button>
-      <input type="file" id="filepicker" style="display: none;" />
-      <div>File ID: <input style="width:40em;" type="text" id="fileId" placeholder="i.e. https://docs.google.com/document/d/<fileId>/edit" disabled="true"></input></div>
-      <input style="width:40em;" type="text" id="filename"></input>
-      <div id="drive"></div>
     </div>
     
     <div style="display:none" id="user-toolbar-options">

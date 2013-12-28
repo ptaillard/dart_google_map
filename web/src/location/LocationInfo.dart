@@ -1,5 +1,7 @@
 library LocationInfo;
 
+import 'dart:collection';
+import 'dart:core';
 import 'package:google_maps/google_maps.dart';
 
 class LocationInfo {
@@ -9,6 +11,14 @@ class LocationInfo {
   String iconMarker;
 
   LocationInfo(this.name, this.coordinate, this.date, this.iconMarker);
+  
+  LocationInfo.from(LinkedHashMap itemSerialize) {
+    this.name = itemSerialize["name"];
+    this.coordinate = new LatLng(double.parse(itemSerialize["lat"]), double.parse(itemSerialize["lng"]));
+    this.date = new DateTime(int.parse(itemSerialize["year"]), int.parse(itemSerialize["month"]), int.parse(itemSerialize["day"]));
+    this.iconMarker = itemSerialize["icon"];
+  }
+  
   
   String getName() {
     return this.name;
@@ -27,6 +37,13 @@ class LocationInfo {
   }
   
   String toJSON() {
-    return "{" + "name:\"" + this.name + "\", lat:\"" + this.coordinate.lat.toString() + "\", lng:\"" + this.coordinate.lng.toString() + "\", date:\"" + this.date.toString() + "\", icon:\"" + this.iconMarker + "\"}";
+    String res = "{" + "\"name\":\"" + this.name + "\", \"lat\":\"" + this.coordinate.lat.toString() + "\", \"lng\":\"" + this.coordinate.lng.toString();
+    res += "\", \"year\":\"" + this.date.year.toString();
+    res += "\", \"month\":\"" + this.date.month.toString();
+    res += "\", \"day\":\"" + this.date.day.toString();
+    res += "\", \"hour\":\"" + this.date.hour.toString();
+    res += "\", \"minute\":\"" + this.date.minute.toString();
+    res += "\", \"icon\":\"" + this.iconMarker + "\"}";
+    return res;
   }
 }

@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:html';
+import 'dart:convert';
 import 'dart:async';
 import 'package:google_maps/google_maps.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -21,9 +22,10 @@ void main() {
 void launchApp() {
   GMap map = initGoogleMap();
   
+ 
   TravelManager travelManager;
   travelManager = new TravelManager(map);
-  
+  /*
   travelManager.appendLocation(LocationFactory.createAeroport('San Francisco', new LatLng(37.616407,-122.386507), new DateTime(2013, 06, 16)));//Coventry Motor Inn
   travelManager.appendLocation(LocationFactory.createCity('San Francisco', new LatLng(37.800165,-122.433116), new DateTime(2013, 06, 16)));//Coventry Motor Inn
   travelManager.appendLocation(LocationFactory.createCity('Barstow', new LatLng(34.844601,-117.08438), new DateTime(2013, 06, 22)));
@@ -39,13 +41,10 @@ void launchApp() {
   travelManager.appendLocation(LocationFactory.createAeroport('Los Angeles', new LatLng(33.942719,-118.408169), new DateTime(2013, 07, 10)));
   
   travelManager.computeRoute();
-  
+  */
   
   ActionsMapManager actionsMapManager = new ActionsMapManager(travelManager, map);
-  
-  UserIdentification userIdentification = new UserIdentification();
   GoogleDriveManager gDriveManager = new GoogleDriveManager(travelManager);
-  userIdentification.addListener(gDriveManager);
 }
 
 

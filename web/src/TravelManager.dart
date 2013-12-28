@@ -48,18 +48,13 @@ class TravelManager {
   String toJSON() {
     String travel = "[";
     bool first = true;
-/*"""
-      [{"Dis":1111.1,"Flag":0,"Obj":{"ID":1,"Title":"Volvo 140"}},
-      {"Dis":2222.2,"Flag":0,"Obj":{"ID":2,"Title":"Volvo 240"}}]""";*/
     for(int key in locationInfos.keys) {
       if(first) {
         first = false;
       } else {
         travel += ",";
       }
-      travel += "{" + key.toString() + ":";
       travel += locationInfos[key].toJSON();
-      travel += "}";
     }
     travel += "]";
     print(travel);
@@ -67,6 +62,10 @@ class TravelManager {
   }
   
   void fromJSON(String jsonToParse) {
-    locationInfos = JSON.decode(jsonToParse);
+    List contentUpload = JSON.decode(jsonToParse);
+    for(LinkedHashMap item in contentUpload) {
+      appendLocation(new LocationInfo.from(item));
+    }
+    computeRoute();
   }
 }
