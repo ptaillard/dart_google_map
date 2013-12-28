@@ -25,7 +25,7 @@ body { height: 100%; margin: 0; padding: 0 }
 .separator {
   align:center;
   width:200px;
-  height: 8px;
+  height: 6px;
   border-radius: 4px;
   border: 1px solid #E5E5E5;
   background-color: #FFFCFC;
